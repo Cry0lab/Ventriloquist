@@ -1,0 +1,33 @@
+--- #This Playbook will run the Cryolab Virtual Machine through it's default configurations after a Vagrant up of the minimal install. Centos7
+- hosts: Cryolab
+  remote_user: victor
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks:
+    -name: Install Epel
+    yum:
+      name: epel-release
+      state: latest
+    -name: Update Repositories
+    yum:
+      name: "*"
+      state: latest
+    -name: Installing Packages
+    yum:
+      name:
+        - net-tools
+        - git
+        - wget
+        - elinks
+        - nmap
+        - vsftpd
+        - openssh-server
+        - make
+        - gcc
+        - python-devel
+        - openssl-devel
+        - python-pip
+        - ansible
+        - docker
