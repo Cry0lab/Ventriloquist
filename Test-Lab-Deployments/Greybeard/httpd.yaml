@@ -1,0 +1,21 @@
+--- # This is a structural YAML example to install HTTPD on the centos group
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  vars:
+    username: vagrant
+  tasks:
+  - name: Install HTTPD Server
+    yum:
+      name: httpd
+      state: latest
+    notify:
+    - startservice
+  handlers:
+  - name: startservice
+    service:
+      name: httpd
+      state: restarted

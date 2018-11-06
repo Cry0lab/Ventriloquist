@@ -8,6 +8,7 @@ DOMAIN="Cryolab.local"
 #Server configs
 servers=[
   {
+    :host=>"Greybeard",
     :hostname => "Greybeard." + DOMAIN,
     :ip => SUBNET + "50",
     :ip_int => "1",
@@ -15,9 +16,11 @@ servers=[
     :cpu => 2,
     :box => "centos/7",
     :hdd => 50000,
-    :disk => "./greybeard.vdi"
+    :disk => "greybeard.vdi",
+    :ansible=>"httpd.yaml"
   },
   {
+    :host=>"Greybeard2",
     :hostname => "Greybeard2." + DOMAIN,
     :ip => SUBNET + "51",
     :ip_int => "1",
@@ -25,21 +28,28 @@ servers=[
     :cpu => 2,
     :box => "centos/7",
     :hdd => 50000,
-    :disk => "./greybeard2.vdi"
+    :disk => "greybeard2.vdi",
+    :ansible=>"httpd.yaml"
   }
 ]
 
 Vagrant.configure("2") do |config|
- # config.vm.box = "centos/7"
-
-  servers.each do |machine|
-        config.vm.define machine[:hostname] do |node|
+   servers.each do |machine|
+        config.vm.define machine[:host] do |node|
             node.vm.box = machine[:box]
             node.vm.hostname = machine[:hostname]
             node.vm.network "private_network", ip: machine[:ip]
             node.vm.provider "virtualbox" do |vb|
                 vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
-                vb.customize ["modifyhd", machine[:disk], "--resize", machine[:hdd]]
+                if (!machine[:disk].nil?)
+                    unless File.exist?(machine[:disk])
+                        vb.customize ["createhd", "--filename", machine[:disk], "--size", machine[:hdd]]
+                    end
+                    vb.customize ["storageattach", :id, "--storagectl", "IDE", "--port", 1, "--device", 0, "--type", "hdd", "--medium", machine[:disk]]
+                    end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = machine[:ansible]
+                  end
             end
         end
     end
