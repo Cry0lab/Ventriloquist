@@ -28,6 +28,7 @@ def spin(phrase, wheel):
 
 # def phrase_picker:
 guessPhrase = "This is the phrase"
+playBoard = ""
 
 # Generate the wheel
 createPlayers()
