@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-    "python.pythonPath": "C:\\Users\\daniel_molina1\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe"
-=======
-    "python.pythonPath": "C:\\Users\\MRFREEZE\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe"
->>>>>>> 14f23cb42b92ad88eb4e6eee69f3faf1228d7018
+    "python.pythonPath": "C:\\Users\\daniel_molina1\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe",
+    "python.formatting.provider": "yapf"
 }
